@@ -9,6 +9,7 @@
 import UIKit
 import Metal
 import simd
+import MetalKit
 
 class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
@@ -16,6 +17,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var metalLayer: CAMetalLayer!
     var widgets: Array<Node>!
     var pipelineState: MTLRenderPipelineState!
+    var texturePipelineState: MTLRenderPipelineState!
     var commandQueue: MTLCommandQueue!
     var timer: CADisplayLink!
     var scene: MTLBuffer!
@@ -26,6 +28,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var scale: Float = 1.0
     var prevScale: Float = 0.0
     var oriScale: Float = 0.0
+    
+    var image: Image!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,21 +68,34 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         scene = device.makeBuffer(bytes: &sceneData, length: widgets.count * widgets[0].dataSize, options: [])
         
+        
         let defaultLibrary = device.newDefaultLibrary()!
-        let fragmentProgram = defaultLibrary.makeFunction(name: "basic_fragment")
+        let colorFragmentProgram = defaultLibrary.makeFunction(name: "color_fragment")
+        let textureFragmentProgram = defaultLibrary.makeFunction(name: "texture_fragment")
         let vertexProgram = defaultLibrary.makeFunction(name: "basic_vertex")
         
-        let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
-        pipelineStateDescriptor.vertexFunction = vertexProgram
-        pipelineStateDescriptor.fragmentFunction = fragmentProgram
-        pipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        let colorPipelineStateDescriptor = MTLRenderPipelineDescriptor()
+        colorPipelineStateDescriptor.vertexFunction = vertexProgram
+        colorPipelineStateDescriptor.fragmentFunction = colorFragmentProgram
+        colorPipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         
-        pipelineState = try! device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
+        pipelineState = try! device.makeRenderPipelineState(descriptor: colorPipelineStateDescriptor)
+        
+        let texturePipelineStateDescriptor = MTLRenderPipelineDescriptor()
+        texturePipelineStateDescriptor.vertexFunction = vertexProgram
+        texturePipelineStateDescriptor.fragmentFunction = textureFragmentProgram
+        texturePipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        
+        texturePipelineState = try! device.makeRenderPipelineState(descriptor: texturePipelineStateDescriptor)
         
         commandQueue = device.makeCommandQueue()
         
         timer = CADisplayLink(target: self, selector: #selector(ViewController.gameloop))
         timer.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
+        
+        
+        image = Image(device: device, url: "https://mural.co/public/assets/images/home/English_get-it-from-MS.png", x: 0.0, y: 800.0, width: 200, height: 200)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -190,6 +207,24 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 //        let debugSize = debugData.count * MemoryLayout.size(ofValue: debugData[0])
 //        renderEncoder.setVertexBytes(&debugData, length: debugSize, at: 0)
 //        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
+        
+        renderEncoder.setRenderPipelineState(texturePipelineState)
+        
+        for i in 0...1000 {
+            let col = Float(i % 10)
+            let row = Float(i / 10)
+            let translate = float4x4.init([
+                [ 1.0, 0.0, 0.0, 0.0],
+                [ 0.0, 1.0, 0.0, 0.0],
+                [ 0.0, 0.0, 1.0, 0.0],
+                [ col * 300.0, row * 300.0, 0.0, 1.0]
+            ])
+            
+            var imgMatrix = matrix * translate;
+            renderEncoder.setVertexBytes(&imgMatrix, length: MemoryLayout.size(ofValue: matrix), at: 1)
+        
+            image.render(renderEncoder: renderEncoder);
+        }
         
         renderEncoder.endEncoding()
         

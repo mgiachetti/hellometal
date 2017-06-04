@@ -16,11 +16,13 @@ struct Constants {
 struct VertexIn {
     packed_float3 position;
     packed_float4 color;
+    packed_float2 textcoord;
 };
 
 struct VertexOut {
     float4 position [[position]];
     float4 color;
+    float2 textcoord;
 };
 
 vertex VertexOut basic_vertex(
@@ -28,15 +30,22 @@ vertex VertexOut basic_vertex(
     constant Constants &uniforms [[buffer(1)]],
     unsigned int vid [[ vertex_id ]]) {
     
-    VertexIn VertexIn = vertex_array[vid];
-    VertexOut VertexOut;
-    VertexOut.position = uniforms.modelViewProjectionMatrix * float4(VertexIn.position, 1.0);
-//    VertexOut.position = float4(VertexIn.position, 1.0);
-    VertexOut.color = VertexIn.color;
+    VertexIn vertexIn = vertex_array[vid];
+    VertexOut vertexOut;
+    vertexOut.position = uniforms.modelViewProjectionMatrix * float4(vertexIn.position, 1.0);
+    vertexOut.color = vertexIn.color;
+    vertexOut.textcoord = vertexIn.textcoord;
     
-    return VertexOut;
+    return vertexOut;
 }
 
-fragment half4 basic_fragment(VertexOut interpolated [[stage_in]]) {
+fragment half4 color_fragment(VertexOut interpolated [[stage_in]]) {
     return half4(interpolated.color);
+}
+
+fragment half4 texture_fragment(VertexOut interpolated [[stage_in]],
+                                texture2d<half>  diffuseTexture [[ texture(0) ]]
+                                ) {
+    constexpr sampler defaultSampler;
+    return diffuseTexture.sample(defaultSampler, float2(interpolated.textcoord));
 }
