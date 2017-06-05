@@ -55,18 +55,21 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
-        widgets = Array<Node>()
+        widgets = MuralLoader.load(device: device, url: "https://api.mural.ly/api/murals/murally-org/1495051098202", with: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcnRpbjc0MDYiLCJzb3VyY2UiOiJpbnRlcm5hbC1zc28iLCJpYXQiOjE0OTY3MDA1NDgsImV4cCI6MTQ5NjcyMjE0OH0.QrtLNQDl-l_8uR3i7lSIIHtjgSUpduP7iedPnzSpqfQ")
+        //print(json)
+        
+//        widgets = Array<Node>()
 //        widgets.append(Sticky(text: "Texto", x: 100, y: 100, width: 128, height: 128, r: 0.988, g: 0.996, b: 0.49, a: 1))
 //        widgets.append(Sticky(text: "Texto", x: 300, y: 500, width: 128, height: 128, r: 0.988, g: 0.996, b: 0.49, a: 1))
         
-        var sceneData = Array<Float>()
-        for i in 0...100000 {
-            let y = Float((4*i) / 1024)
-            let x =  Float((4*i) % 1024 + (Int(y) % 2))
-            widgets.append(Sticky(text: "Texto", x: x, y: y, width: 1, height: 1, r: 0.988, g: 0.996, b: 0.49, a: 1))
-            sceneData += widgets[i].vertexData;
-        }
-        scene = device.makeBuffer(bytes: &sceneData, length: widgets.count * widgets[0].dataSize, options: [])
+//        var sceneData = Array<Float>()
+//        for i in 0...100000 {
+//            let y = Float((4*i) / 1024)
+//            let x =  Float((4*i) % 1024 + (Int(y) % 2))
+//            widgets.append(Sticky(text: "Texto", x: x, y: y, width: 1, height: 1, r: 0.988, g: 0.996, b: 0.49, a: 1))
+//            sceneData += widgets[i].vertexData;
+//        }
+//        scene = device.makeBuffer(bytes: &sceneData, length: widgets.count * widgets[0].dataSize, options: [])
         
         
         let defaultLibrary = device.newDefaultLibrary()!
@@ -85,6 +88,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         texturePipelineStateDescriptor.vertexFunction = vertexProgram
         texturePipelineStateDescriptor.fragmentFunction = textureFragmentProgram
         texturePipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        texturePipelineStateDescriptor.colorAttachments[0].isBlendingEnabled = true
+        texturePipelineStateDescriptor.colorAttachments[0].rgbBlendOperation = .add;
+        texturePipelineStateDescriptor.colorAttachments[0].alphaBlendOperation = .add;
+        texturePipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one;
+        texturePipelineStateDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .one;
+        texturePipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha;
+        texturePipelineStateDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha;
+        
         
         texturePipelineState = try! device.makeRenderPipelineState(descriptor: texturePipelineStateDescriptor)
         
@@ -191,12 +202,49 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         renderEncoder.setVertexBytes(&matrix, length: MemoryLayout.size(ofValue: matrix), at: 1)
         
         // draw objects
-//        for widget in widgets {
-//            widget.render(renderEncoder: renderEncoder)
-//        }
+        for widget in widgets {
+            if widget as? Image != nil {
+                renderEncoder.setRenderPipelineState(texturePipelineState)
+                widget.render(renderEncoder: renderEncoder)
+            } else {
+                renderEncoder.setRenderPipelineState(pipelineState)
+                widget.render(renderEncoder: renderEncoder)
+            }
+            
+        }
         
-        renderEncoder.setVertexBuffer(scene, offset: 0, at: 0)
-        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: widgets.count * 6)
+        // render n times more
+        let muralWidth:Float =  35000
+        let muralHeight:Float =  18000
+        let n = 4
+        
+        for i in 1..<n {
+            let col = Float(i % Int(sqrt(Double(n))))
+            let row = Float(i / Int(sqrt(Double(n))))
+            let translate = float4x4.init([
+                [ 1.0, 0.0, 0.0, 0.0],
+                [ 0.0, 1.0, 0.0, 0.0],
+                [ 0.0, 0.0, 1.0, 0.0],
+                [ col * muralWidth, row * muralHeight, 0.0, 1.0]
+            ])
+        
+            var imgMatrix = matrix * translate;
+            renderEncoder.setVertexBytes(&imgMatrix, length: MemoryLayout.size(ofValue: matrix), at: 1)
+            for widget in widgets {
+                if widget as? Image != nil {
+                    renderEncoder.setRenderPipelineState(texturePipelineState)
+                    widget.render(renderEncoder: renderEncoder)
+                } else {
+                    renderEncoder.setRenderPipelineState(pipelineState)
+                    widget.render(renderEncoder: renderEncoder)
+                }
+                
+            }
+        }
+        
+        
+//        renderEncoder.setVertexBuffer(scene, offset: 0, at: 0)
+//        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: widgets.count * 6)
         
         // render debug triangle
 //        var debugData:[Float] = [
@@ -208,23 +256,23 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
 //        renderEncoder.setVertexBytes(&debugData, length: debugSize, at: 0)
 //        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
         
-        renderEncoder.setRenderPipelineState(texturePipelineState)
         
-        for i in 0...1000 {
-            let col = Float(i % 10)
-            let row = Float(i / 10)
-            let translate = float4x4.init([
-                [ 1.0, 0.0, 0.0, 0.0],
-                [ 0.0, 1.0, 0.0, 0.0],
-                [ 0.0, 0.0, 1.0, 0.0],
-                [ col * 300.0, row * 300.0, 0.0, 1.0]
-            ])
-            
-            var imgMatrix = matrix * translate;
-            renderEncoder.setVertexBytes(&imgMatrix, length: MemoryLayout.size(ofValue: matrix), at: 1)
         
-            image.render(renderEncoder: renderEncoder);
-        }
+//        for i in 0...1000 {
+//            let col = Float(i % 10)
+//            let row = Float(i / 10)
+//            let translate = float4x4.init([
+//                [ 1.0, 0.0, 0.0, 0.0],
+//                [ 0.0, 1.0, 0.0, 0.0],
+//                [ 0.0, 0.0, 1.0, 0.0],
+//                [ col * 300.0, row * 300.0, 0.0, 1.0]
+//            ])
+//            
+//            var imgMatrix = matrix * translate;
+//            renderEncoder.setVertexBytes(&imgMatrix, length: MemoryLayout.size(ofValue: matrix), at: 1)
+//        
+//            image.render(renderEncoder: renderEncoder);
+//        }
         
         renderEncoder.endEncoding()
         

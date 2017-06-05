@@ -46,6 +46,15 @@ fragment half4 color_fragment(VertexOut interpolated [[stage_in]]) {
 fragment half4 texture_fragment(VertexOut interpolated [[stage_in]],
                                 texture2d<half>  diffuseTexture [[ texture(0) ]]
                                 ) {
-    constexpr sampler defaultSampler;
-    return diffuseTexture.sample(defaultSampler, float2(interpolated.textcoord));
+//    constexpr sampler defaultSampler;
+    constexpr sampler defaultSampler(coord::normalized,
+      address::repeat,
+      filter::linear);
+    
+    half4 color = diffuseTexture.sample(defaultSampler, float2(interpolated.textcoord));
+    
+//    if (color.a < 0.1)
+//        discard_fragment();
+    
+    return color;
 }

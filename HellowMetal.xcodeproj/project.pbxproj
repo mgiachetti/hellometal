@@ -19,6 +19,8 @@
 		D1873F161ED860B900DCB534 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1873F151ED860B900DCB534 /* Vertex.swift */; };
 		D1873F181ED861F200DCB534 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1873F171ED861F200DCB534 /* Node.swift */; };
 		D1D9AE391EE1F159001175B0 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AE381EE1F159001175B0 /* Image.swift */; };
+		D1D9AEA51EE445FE001175B0 /* MuralLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */; };
+		D1D9AEA71EE46650001175B0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEA61EE46650001175B0 /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		D1873F151ED860B900DCB534 /* Vertex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		D1873F171ED861F200DCB534 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		D1D9AE381EE1F159001175B0 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuralLoader.swift; sourceTree = "<group>"; };
+		D1D9AEA61EE46650001175B0 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,8 @@
 				D1873F171ED861F200DCB534 /* Node.swift */,
 				D146456B1EDF0322006CBFCC /* Sticky.swift */,
 				D1D9AE381EE1F159001175B0 /* Image.swift */,
+				D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */,
+				D1D9AEA61EE46650001175B0 /* Color.swift */,
 			);
 			path = HellowMetal;
 			sourceTree = "<group>";
@@ -281,9 +287,11 @@
 				D1873F141ED724DD00DCB534 /* Shaders.metal in Sources */,
 				D1873F181ED861F200DCB534 /* Node.swift in Sources */,
 				D1873F161ED860B900DCB534 /* Vertex.swift in Sources */,
+				D1D9AEA51EE445FE001175B0 /* MuralLoader.swift in Sources */,
 				D1873EE81ED71FA000DCB534 /* ViewController.swift in Sources */,
 				D146456C1EDF0322006CBFCC /* Sticky.swift in Sources */,
 				D1873EE61ED71FA000DCB534 /* AppDelegate.swift in Sources */,
+				D1D9AEA71EE46650001175B0 /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
