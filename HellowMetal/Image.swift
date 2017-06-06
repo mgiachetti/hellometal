@@ -37,12 +37,12 @@ class Image: Node {
             URLSession.shared.dataTask(with: uri!) { (data, _, _) in
                 if data != nil {
                     DispatchQueue.main.async(execute: { () -> Void in
-                        let options = [MTKTextureLoaderOptionGenerateMipmaps: true]
+                        let options = [MTKTextureLoaderOptionGenerateMipmaps: true] as [String : NSObject]
                         
-                        self.texture = try? textureLoader.newTexture(with: data!, options: options as [String : NSObject])
-                        if self.texture != nil {
-                            print(self.texture.mipmapLevelCount)
-                        }
+                        self.texture = try? textureLoader.newTexture(with: data!, options: options )
+//                        if self.texture != nil {
+//                            print(self.texture.mipmapLevelCount)
+//                        }
                     })
                 }
             }.resume()

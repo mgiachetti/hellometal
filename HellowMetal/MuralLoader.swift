@@ -44,6 +44,11 @@ func getOffset(widgets: [String: Any], id: String?) -> Point {
     return Point(x: parent["x"] as! Float, y: parent["y"] as! Float)
 }
 
+struct Mural {
+    var background: Color
+    var widgets: [Node]
+}
+
 class MuralLoader {
     
     static func loadJson(url: URL) -> [String: Any] {
@@ -52,7 +57,7 @@ class MuralLoader {
         return json as! [String: Any]
     }
     
-    static func load(device: MTLDevice, url: String, with token: String) -> [Node] {
+    static func load(device: MTLDevice, url: String, with token: String) -> Mural {
         let json = loadJson(url: URL(string: "\(url)?jwt=\(token)")!)
         let widgetsData = json["widgets"] as! [String: [String: Any]]
 
@@ -93,6 +98,6 @@ class MuralLoader {
         
         widgets.append(Image(device: device, url: "" , x: 100, y: 100, width: 100, height: 100))
         
-        return widgets;
+        return Mural(background: Color(string: json["background"] as! String), widgets: widgets)
     }
 }

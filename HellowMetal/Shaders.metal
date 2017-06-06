@@ -57,4 +57,5 @@ fragment half4 texture_fragment(VertexOut interpolated [[stage_in]],
 //        discard_fragment();
     
     return color;
+//    return half4(color.rgb, 0.5);
 }
