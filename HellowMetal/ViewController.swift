@@ -67,7 +67,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
-        let mural = MuralLoader.load(device: device, url: "https://api.mural.ly/api/murals/murally-org/1495051098202", with: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcnRpbjc0MDYiLCJzb3VyY2UiOiJpbnRlcm5hbC1zc28iLCJpYXQiOjE0OTY3NTM3MDAsImV4cCI6MTQ5Njc3NTMwMH0.yseU3U4CTYhBY59e9ZoeqA_0BRFbgNNhPm-KjxdcPhU")
+        let mural = MuralLoader.load(device: device, url: "https://api.mural.ly/api/murals/murally-org/1496843536743", with: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcnRpbjc0MDYiLCJzb3VyY2UiOiJpbnRlcm5hbC1zc28iLCJpYXQiOjE0OTY4NDIzNTEsImV4cCI6MTQ5Njg2Mzk1MX0.DuMuJIVEnd_A29em7l9_TZIu3g6o8UaN8cZR5qEt1Dw")
         widgets = mural.widgets
         clearColor = MTLClearColor(red: Double(mural.background.r), green: Double(mural.background.g), blue: Double(mural.background.b), alpha: Double(mural.background.a))
         
@@ -94,6 +94,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         colorPipelineStateDescriptor.vertexFunction = vertexProgram
         colorPipelineStateDescriptor.fragmentFunction = colorFragmentProgram
         colorPipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        colorPipelineStateDescriptor.colorAttachments[0].isBlendingEnabled = true
+        colorPipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+        colorPipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha;
         
         pipelineState = try! device.makeRenderPipelineState(descriptor: colorPipelineStateDescriptor)
         
@@ -102,12 +105,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         texturePipelineStateDescriptor.fragmentFunction = textureFragmentProgram
         texturePipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         texturePipelineStateDescriptor.colorAttachments[0].isBlendingEnabled = true
-        texturePipelineStateDescriptor.colorAttachments[0].rgbBlendOperation = .add;
-        texturePipelineStateDescriptor.colorAttachments[0].alphaBlendOperation = .add;
-        texturePipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one;
-        texturePipelineStateDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .one;
+        texturePipelineStateDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha;
         texturePipelineStateDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha;
-        texturePipelineStateDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha;
+        
         
         
         texturePipelineState = try! device.makeRenderPipelineState(descriptor: texturePipelineStateDescriptor)

@@ -39,11 +39,12 @@ vertex VertexOut basic_vertex(
     return vertexOut;
 }
 
-fragment half4 color_fragment(VertexOut interpolated [[stage_in]]) {
-    return half4(interpolated.color);
+fragment half4 color_fragment(VertexOut vertexIn [[stage_in]]) {
+    float4 color = vertexIn.color;
+    return half4(color.r, color.g, color.b, color.a);
 }
 
-fragment half4 texture_fragment(VertexOut interpolated [[stage_in]],
+fragment half4 texture_fragment(VertexOut vertexIn [[stage_in]],
                                 texture2d<half>  diffuseTexture [[ texture(0) ]]
                                 ) {
 //    constexpr sampler defaultSampler;
@@ -51,7 +52,7 @@ fragment half4 texture_fragment(VertexOut interpolated [[stage_in]],
       address::repeat,
       filter::linear);
     
-    half4 color = diffuseTexture.sample(defaultSampler, float2(interpolated.textcoord));
+    half4 color = diffuseTexture.sample(defaultSampler, float2(vertexIn.textcoord));
     
 //    if (color.a < 0.1)
 //        discard_fragment();

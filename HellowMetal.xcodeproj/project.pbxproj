@@ -21,6 +21,7 @@
 		D1D9AE391EE1F159001175B0 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AE381EE1F159001175B0 /* Image.swift */; };
 		D1D9AEA51EE445FE001175B0 /* MuralLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */; };
 		D1D9AEA71EE46650001175B0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEA61EE46650001175B0 /* Color.swift */; };
+		D1D9AEC61EE73C2C001175B0 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEC51EE73C2B001175B0 /* Shape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		D1D9AE381EE1F159001175B0 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuralLoader.swift; sourceTree = "<group>"; };
 		D1D9AEA61EE46650001175B0 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		D1D9AEC51EE73C2B001175B0 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 		D1873EE41ED71FA000DCB534 /* HellowMetal */ = {
 			isa = PBXGroup;
 			children = (
+				D1D9AEC41EE73BC9001175B0 /* Widgets */,
 				D1873EE51ED71FA000DCB534 /* AppDelegate.swift */,
 				D1873EE71ED71FA000DCB534 /* ViewController.swift */,
 				D1873F131ED724DD00DCB534 /* Shaders.metal */,
@@ -119,9 +122,6 @@
 				D1873EEE1ED71FA000DCB534 /* LaunchScreen.storyboard */,
 				D1873EF11ED71FA000DCB534 /* Info.plist */,
 				D1873F151ED860B900DCB534 /* Vertex.swift */,
-				D1873F171ED861F200DCB534 /* Node.swift */,
-				D146456B1EDF0322006CBFCC /* Sticky.swift */,
-				D1D9AE381EE1F159001175B0 /* Image.swift */,
 				D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */,
 				D1D9AEA61EE46650001175B0 /* Color.swift */,
 			);
@@ -144,6 +144,17 @@
 				D1873F071ED71FA000DCB534 /* Info.plist */,
 			);
 			path = HellowMetalUITests;
+			sourceTree = "<group>";
+		};
+		D1D9AEC41EE73BC9001175B0 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				D1873F171ED861F200DCB534 /* Node.swift */,
+				D146456B1EDF0322006CBFCC /* Sticky.swift */,
+				D1D9AE381EE1F159001175B0 /* Image.swift */,
+				D1D9AEC51EE73C2B001175B0 /* Shape.swift */,
+			);
+			name = Widgets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,6 +299,7 @@
 				D1873F181ED861F200DCB534 /* Node.swift in Sources */,
 				D1873F161ED860B900DCB534 /* Vertex.swift in Sources */,
 				D1D9AEA51EE445FE001175B0 /* MuralLoader.swift in Sources */,
+				D1D9AEC61EE73C2C001175B0 /* Shape.swift in Sources */,
 				D1873EE81ED71FA000DCB534 /* ViewController.swift in Sources */,
 				D146456C1EDF0322006CBFCC /* Sticky.swift in Sources */,
 				D1873EE61ED71FA000DCB534 /* AppDelegate.swift in Sources */,

@@ -25,7 +25,7 @@ struct Bound {
         
         for vertex in vertices {
             minX = Float.minimum(vertex.x, minX)
-            minY = Float.minimum(vertex.y, minX)
+            minY = Float.minimum(vertex.y, minY)
             maxX = Float.maximum(vertex.x, maxX)
             maxY = Float.maximum(vertex.y, maxY)
         }
@@ -69,7 +69,7 @@ class Node {
     func render(renderEncoder: MTLRenderCommandEncoder) {
         renderEncoder.setVertexBytes(self.vertexData, length: dataSize, at: 0)
 
-        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: vertexCount / 3)
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: 1)
         
     }
     

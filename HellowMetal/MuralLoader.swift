@@ -36,17 +36,26 @@ struct Point {
     var y: Float
 }
 
-func getOffset(widgets: [String: Any], id: String?) -> Point {
+func getOffset(widgets: inout [String: [String: Any]], id: String?) -> Point {
     if id == nil {
         return Point(x: 0.0, y: 0.0)
     }
-    let parent = widgets[id!] as! [String: Any]
+    let parent = widgets[id!]!
     return Point(x: parent["x"] as! Float, y: parent["y"] as! Float)
 }
 
 struct Mural {
     var background: Color
     var widgets: [Node]
+}
+
+func getStackingOrder(widgets: inout [String: [String: Any]], id: String) -> Int {
+    let widget = widgets[id]!
+    let properties = widget["properties"] as! [String: Any]
+    let parentId = properties["parentId"] as? String ?? nil
+    let stackingOrder = widget["stackingOrder"] as! Int
+    
+    return parentId == nil || parentId!.isEmpty ? stackingOrder * 1000000 : getStackingOrder(widgets: &widgets, id: parentId!) + stackingOrder
 }
 
 class MuralLoader {
@@ -59,16 +68,16 @@ class MuralLoader {
     
     static func load(device: MTLDevice, url: String, with token: String) -> Mural {
         let json = loadJson(url: URL(string: "\(url)?jwt=\(token)")!)
-        let widgetsData = json["widgets"] as! [String: [String: Any]]
+        var widgetsData = json["widgets"] as! [String: [String: Any]]
 
         var widgets = Array<Node>();
         
-        let values = widgetsData.values.sorted(by: { ($0["stackingOrder"] as! Int) < ($1["stackingOrder"] as! Int) })
+        let values = widgetsData.values.sorted(by: { getStackingOrder(widgets: &widgetsData, id:$0["id"] as! String) < getStackingOrder(widgets: &widgetsData, id: $1["id"] as! String) })
         
         for widget in values {
             let type = WidgetType(rawValue: widget["type"] as! String)!
             let properties = widget["properties"] as! [String: Any]
-            let offset = getOffset(widgets: widgetsData, id: properties["parentId"] as? String)
+            let offset = getOffset(widgets: &widgetsData, id: properties["parentId"] as? String)
             switch type {
             case .text:
                 widgets.append(Sticky(
@@ -92,11 +101,19 @@ class MuralLoader {
                     width: widget["width"] as! Float,
                     height: widget["height"] as! Float
                 ))
+            case .shape:
+                widgets.append(Shape(
+                    type: ShapeType(rawValue: properties["shapeType"] as! String)!,
+                    x: widget["x"] as! Float + offset.x,
+                    y: widget["y"] as! Float + offset.y,
+                    width: widget["width"] as! Float,
+                    height: widget["height"] as! Float,
+                    color: Color(string: (properties["background"] as? String) ?? "rgba(0,0,0,0)"),
+                    rotation: (widget["rotation"] as? Float) ?? Float(0.0)
+                ))
             default: break
             }
         }
-        
-        widgets.append(Image(device: device, url: "" , x: 100, y: 100, width: 100, height: 100))
         
         return Mural(background: Color(string: json["background"] as! String), widgets: widgets)
     }

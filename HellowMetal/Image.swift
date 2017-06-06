@@ -59,7 +59,7 @@ class Image: Node {
         
         renderEncoder.setVertexBytes(self.vertexData, length: dataSize, at: 0)
         
-        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: vertexCount / 3)
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: 1)
         
     }
 }
