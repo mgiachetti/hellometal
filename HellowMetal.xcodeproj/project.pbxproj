@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D12C4D431EEB41580011C9DB /* MetalInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12C4D421EEB41580011C9DB /* MetalInstance.swift */; };
 		D146456C1EDF0322006CBFCC /* Sticky.swift in Sources */ = {isa = PBXBuildFile; fileRef = D146456B1EDF0322006CBFCC /* Sticky.swift */; };
 		D1873EE61ED71FA000DCB534 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1873EE51ED71FA000DCB534 /* AppDelegate.swift */; };
 		D1873EE81ED71FA000DCB534 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1873EE71ED71FA000DCB534 /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 		D1D9AEA51EE445FE001175B0 /* MuralLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */; };
 		D1D9AEA71EE46650001175B0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEA61EE46650001175B0 /* Color.swift */; };
 		D1D9AEC61EE73C2C001175B0 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEC51EE73C2B001175B0 /* Shape.swift */; };
+		D1D9AEC91EE86F1C001175B0 /* TextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D9AEC81EE86F1C001175B0 /* TextUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D12C4D421EEB41580011C9DB /* MetalInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalInstance.swift; sourceTree = "<group>"; };
 		D146456B1EDF0322006CBFCC /* Sticky.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sticky.swift; sourceTree = "<group>"; };
 		D1873EE21ED71FA000DCB534 /* HellowMetal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HellowMetal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1873EE51ED71FA000DCB534 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 		D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuralLoader.swift; sourceTree = "<group>"; };
 		D1D9AEA61EE46650001175B0 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		D1D9AEC51EE73C2B001175B0 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		D1D9AEC81EE86F1C001175B0 /* TextUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 		D1873EE41ED71FA000DCB534 /* HellowMetal */ = {
 			isa = PBXGroup;
 			children = (
+				D1D9AEC71EE86EDF001175B0 /* utils */,
 				D1D9AEC41EE73BC9001175B0 /* Widgets */,
 				D1873EE51ED71FA000DCB534 /* AppDelegate.swift */,
 				D1873EE71ED71FA000DCB534 /* ViewController.swift */,
@@ -124,6 +129,7 @@
 				D1873F151ED860B900DCB534 /* Vertex.swift */,
 				D1D9AEA41EE445FE001175B0 /* MuralLoader.swift */,
 				D1D9AEA61EE46650001175B0 /* Color.swift */,
+				D12C4D421EEB41580011C9DB /* MetalInstance.swift */,
 			);
 			path = HellowMetal;
 			sourceTree = "<group>";
@@ -155,6 +161,14 @@
 				D1D9AEC51EE73C2B001175B0 /* Shape.swift */,
 			);
 			name = Widgets;
+			sourceTree = "<group>";
+		};
+		D1D9AEC71EE86EDF001175B0 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				D1D9AEC81EE86F1C001175B0 /* TextUtils.swift */,
+			);
+			name = utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +314,8 @@
 				D1873F161ED860B900DCB534 /* Vertex.swift in Sources */,
 				D1D9AEA51EE445FE001175B0 /* MuralLoader.swift in Sources */,
 				D1D9AEC61EE73C2C001175B0 /* Shape.swift in Sources */,
+				D12C4D431EEB41580011C9DB /* MetalInstance.swift in Sources */,
+				D1D9AEC91EE86F1C001175B0 /* TextUtils.swift in Sources */,
 				D1873EE81ED71FA000DCB534 /* ViewController.swift in Sources */,
 				D146456C1EDF0322006CBFCC /* Sticky.swift in Sources */,
 				D1873EE61ED71FA000DCB534 /* AppDelegate.swift in Sources */,

@@ -67,6 +67,8 @@ class Node {
     }
     
     func render(renderEncoder: MTLRenderCommandEncoder) {
+        renderEncoder.setRenderPipelineState(MetalInstance.colorPipelineState!)
+        
         renderEncoder.setVertexBytes(self.vertexData, length: dataSize, at: 0)
 
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: 1)

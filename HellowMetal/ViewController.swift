@@ -67,7 +67,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
-        let mural = MuralLoader.load(device: device, url: "https://api.mural.ly/api/murals/murally-org/1496843536743", with: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcnRpbjc0MDYiLCJzb3VyY2UiOiJpbnRlcm5hbC1zc28iLCJpYXQiOjE0OTY4NDIzNTEsImV4cCI6MTQ5Njg2Mzk1MX0.DuMuJIVEnd_A29em7l9_TZIu3g6o8UaN8cZR5qEt1Dw")
+        let mural = MuralLoader.load(device: device, url: "https://api.mural.ly/api/murals/murally-org/1496843536743", with: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcnRpbjc0MDYiLCJzb3VyY2UiOiJpbnRlcm5hbC1zc28iLCJpYXQiOjE0OTcyNzIxMDgsImV4cCI6MTQ5NzI5MzcwOH0.wsLkHzjQaXiCv3zqlvKUVif4up7F-mEy3lYQ1ilfD2c")
         widgets = mural.widgets
         clearColor = MTLClearColor(red: Double(mural.background.r), green: Double(mural.background.g), blue: Double(mural.background.b), alpha: Double(mural.background.a))
         
@@ -120,6 +120,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         vel = float2(x: 0, y: 0)
         offset = float2(x: 0, y: 0)
         
+        MetalInstance.device = device
+        MetalInstance.colorPipelineState = pipelineState
+        MetalInstance.texturePipelineState = texturePipelineState
     }
 
     override func didReceiveMemoryWarning() {
@@ -176,14 +179,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         
         // draw objects
         for widget in widgets {
-            if widget as? Image != nil {
-                renderEncoder.setRenderPipelineState(texturePipelineState)
-                widget.render(renderEncoder: renderEncoder)
-            } else {
-                renderEncoder.setRenderPipelineState(pipelineState)
-                widget.render(renderEncoder: renderEncoder)
-            }
-            
+            widget.render(renderEncoder: renderEncoder)
         }
         
         // render n times more
@@ -285,12 +281,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func getNode(position screen: float2) -> Node? {
         let pos = inverseTransform(position: screen)
+        var res : Node? = nil
         for widget in self.widgets {
             if widget.bound.isInside(x: pos.x, y: pos.y) {
-                return widget
+                res = widget
             }
         }
-        return nil;
+        return res;
     }
     
     func longPress(sender: UILongPressGestureRecognizer) {

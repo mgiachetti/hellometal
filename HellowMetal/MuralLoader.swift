@@ -81,6 +81,7 @@ class MuralLoader {
             switch type {
             case .text:
                 widgets.append(Sticky(
+                    device: device,
                     text: properties["text"] as! String,
                     x: widget["x"] as! Float + offset.x,
                     y: widget["y"] as! Float + offset.y,
@@ -96,6 +97,19 @@ class MuralLoader {
                 widgets.append(Image(
                     device: device,
                     url: getImage(url: url!, token: token),
+                    x: widget["x"] as! Float + offset.x,
+                    y: widget["y"] as! Float + offset.y,
+                    width: widget["width"] as! Float,
+                    height: widget["height"] as! Float
+                ))
+            case .sticker:
+                let url = properties["stickerURL"] as? String
+                if url == nil || url!.isEmpty {
+                    continue
+                }
+                widgets.append(Image(
+                    device: device,
+                    url: getImage(url: url!.replacingOccurrences(of: ".svg", with: ".png"), token: token),
                     x: widget["x"] as! Float + offset.x,
                     y: widget["y"] as! Float + offset.y,
                     width: widget["width"] as! Float,

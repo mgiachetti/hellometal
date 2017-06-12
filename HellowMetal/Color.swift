@@ -44,6 +44,10 @@ extension Color {
             self.a = 1.0
         }
     }
+    
+    func grayScale() -> Float {
+        return self.r * 0.299 + self.g * 0.587 + self.b * 0.114
+    }
 }
 
 extension Color {
